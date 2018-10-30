@@ -1,5 +1,6 @@
 <?php
-include_once 'koneksi.php';
+require_once 'models/User_model.php';
+$um = new User_model();
 session_start();
 if (!isset($_SESSION['username'])) {
 	header('location: index.php');

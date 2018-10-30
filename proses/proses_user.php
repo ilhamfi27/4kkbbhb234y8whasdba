@@ -1,5 +1,6 @@
 <?php
-include_once '../koneksi.php';
+require_once '../models/User_model.php';
+$um = new User_model();
 session_start();
 if(isset($_GET['proses'])){
     switch ($_GET['proses']) {
@@ -8,8 +9,7 @@ if(isset($_GET['proses'])){
         	$password = isset($_POST['password']) ? $_POST['password'] : "";
         	$password_confirm = isset($_POST['password']) ? $_POST['password'] : "";
         	if ($password == $password_confirm) {
-        		$query = "INSERT INTO `user`(`username`, `password`) VALUES ('$username','".md5($password)."')";
-        		$result = mysqli_query($conn,$query);
+                $result = $um->user_registration($username, $password);
         		if ($result) {
         			header('location: ../index.php');
         		} else {
@@ -20,8 +20,7 @@ if(isset($_GET['proses'])){
         case 'login':
             $username = isset($_POST['username']) ? $_POST['username'] : "";
             $password = isset($_POST['password']) ? md5($_POST['password']) : "";
-            $query = "SELECT `id`, `username`, `password` FROM `user` WHERE `username` = '$username' AND `password` = '$password'";
-            $result = mysqli_query($conn, $query);
+            $result = $um->user_login_check($username, $password);
             $jumlah_data = mysqli_num_rows($result);
             $d = mysqli_fetch_array($result);
             if ($jumlah_data > 0) {

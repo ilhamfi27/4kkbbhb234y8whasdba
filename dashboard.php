@@ -1,5 +1,6 @@
 <?php
-include_once 'koneksi.php';
+include_once 'models/Mahasiswa_model.php';
+$mm = new Mahasiswa_model();
 session_start();
 if (!isset($_SESSION['username'])) {
 	header('location: index.php');
@@ -36,20 +37,8 @@ if (!isset($_SESSION['username'])) {
 					</thead>
 					<tbody>
 						<?php
-						$query = "SELECT
-						`id`,
-						`nim`,
-						CONCAT(`nama_depan`, ' ', `nama_belakang`) AS 'nama',
-						`kelas`,
-						`tanggal_lahir`,
-						`hobby`,
-						`wisata_favorit`,
-						`genre_film_favorit`
-						FROM
-						`mahasiswa`";
-						$result = mysqli_query($conn, $query);
 						$n = 1;
-						while($d = mysqli_fetch_array($result)){
+						foreach ($mm->list_mahasiswa() as $d) {
 							?>
 							<tr>
 								<td><?php echo $n; ?></td>
@@ -60,7 +49,7 @@ if (!isset($_SESSION['username'])) {
 								<td><?php echo $d['hobby']; ?></td>
 								<td><?php echo $d['wisata_favorit']; ?></td>
 								<td><?php echo $d['genre_film_favorit']; ?></td>
-								<td><a href="edit.php?id=<?php echo $d['id']; ?>">Edit</a> | <a href="proses_data_mahasiswa.php?proses=hapus&id=<?php echo $d['id']; ?>" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');">Hapus</a></td>
+								<td><a href="edit.php?id=<?php echo $d['id']; ?>">Edit</a> | <a href="proses/proses_data_mahasiswa.php?proses=hapus&id=<?php echo $d['id']; ?>" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');">Hapus</a></td>
 							</tr>
 							<?php
 							$n++;

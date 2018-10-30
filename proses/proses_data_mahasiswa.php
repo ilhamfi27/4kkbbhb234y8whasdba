@@ -1,5 +1,6 @@
 <?php
-include_once '../koneksi.php';
+include_once '../models/Mahasiswa_model.php';
+$mm = new Mahasiswa_model();
 if (isset($_GET['proses'])) {
     switch ($_GET['proses']) {
         case 'input':
@@ -11,30 +12,7 @@ if (isset($_GET['proses'])) {
             $hobby          = isset($_POST['hobby']) ? implode(", ", $_POST['hobby']) : "";
             $tempat_wisata  = isset($_POST['tempat_wisata']) ? implode(", ", $_POST['tempat_wisata']) : "";
             $genre_film     = isset($_POST['genre_film']) ? implode(", ", $_POST['genre_film']) : "";
-
-            $query = "INSERT INTO `mahasiswa` (
-                      `nim`,
-                      `nama_depan`,
-                      `nama_belakang`,
-                      `kelas`,
-                      `tanggal_lahir`,
-                      `hobby`,
-                      `wisata_favorit`,
-                      `genre_film_favorit`
-                    )
-                    VALUES
-                      (
-                        '$nim',
-                        '$nama_depan',
-                        '$nama_belakang',
-                        '$kelas',
-                        '$tanggal_lahir',
-                        '$hobby',
-                        '$tempat_wisata',
-                        '$genre_film'
-                      );
-                    ";
-            $result = mysqli_query($conn, $query);
+            $result = $mm->insert_data_mahasiswa($nim,$nama_depan,$nama_belakang,$kelas,$tanggal_lahir,$hobby,$tempat_wisata,$genre_film);
             if ($result) {
                 header('location: ../dashboard.php');
             } else {
@@ -52,20 +30,7 @@ if (isset($_GET['proses'])) {
             $hobby          = isset($_POST['hobby']) ? implode(", ", $_POST['hobby']) : "";
             $tempat_wisata  = isset($_POST['tempat_wisata']) ? implode(", ", $_POST['tempat_wisata']) : "";
             $genre_film     = isset($_POST['genre_film']) ? implode(", ", $_POST['genre_film']) : "";
-            $query = "UPDATE
-                          `mahasiswa`
-                        SET
-                          `nim` = 'nim',
-                          `nama_depan` = '$nama_depan',
-                          `nama_belakang` = '$nama_belakang',
-                          `kelas` = '$kelas',
-                          `tanggal_lahir` = '$tanggal_lahir',
-                          `hobby` = '$hobby',
-                          `wisata_favorit` = '$tempat_wisata',
-                          `genre_film_favorit` = '$genre_film'
-                        WHERE `id` = '$id';
-                        ";
-            $result = mysqli_query($conn, $query);
+            $result = $mm->update_data_mahasiswa($nim,$nama_depan,$nama_belakang,$kelas,$tanggal_lahir,$hobby,$tempat_wisata,$genre_film,$id);
             if ($result) {
                 header('location: ../dashboard.php');
             } else {
@@ -74,12 +39,7 @@ if (isset($_GET['proses'])) {
             break;
         case 'hapus':
             $id = $_GET['id'];
-            $query = "DELETE
-                        FROM
-                          `mahasiswa`
-                        WHERE `id` = '$id';
-                        ";
-            $result = mysqli_query($conn, $query);
+            $result = $mm->hapus_data_mahasiswa($id);
             if ($result) {
                 header('location: ../dashboard.php');
             } else {

@@ -1,25 +1,13 @@
 <?php
-include_once 'koneksi.php';
+include_once 'models/Mahasiswa_model.php';
+$mm = new Mahasiswa_model();
 session_start();
 if (!isset($_SESSION['username'])) {
 	header('location: index.php');
 }
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $query = "SELECT
-              `id`,
-              `nim`,
-              `nama_depan`,
-              `nama_belakang`,
-              `kelas`,
-              `tanggal_lahir`,
-              `hobby`,
-              `wisata_favorit`,
-              `genre_film_favorit`
-            FROM
-              `mahasiswa`";
-    $result = mysqli_query($conn, $query);
-    $d = mysqli_fetch_array($result);
+	$d = $mm->detail_mahasiswa($id);
 }
 ?>
 <!DOCTYPE html>

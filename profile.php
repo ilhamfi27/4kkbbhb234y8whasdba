@@ -6,6 +6,7 @@ if (!isset($_SESSION['username'])) {
 	header('location: index.php');
 }
 $id_user = $_SESSION['user_id'];
+$d = mysqli_fetch_array($um->detail_user($id_user));
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,30 +30,52 @@ $id_user = $_SESSION['user_id'];
 					<h3 class="panel-title">Profil</h3>
 				</div>
 		        <div class="panel-body">
-					<form>
+					<form action="proses/proses_user.php?proses=update_profile" method="post">
+						<input type="hidden" name="id" value="<?php echo $id_user; ?>">
 						<div class="form-group">
 							<label>Username</label>
-							<input type="text" class="form-control" name="username" placeholder="Username">
+							<input type="text" class="form-control" name="username" placeholder="Username" value="<?php echo $d['username']; ?>">
 						</div>
 						<div class="form-group">
 							<label>Nama Depan</label>
-							<input type="text" class="form-control" name="username" placeholder="Nama Depan">
+							<input type="text" class="form-control" name="nama_depan" placeholder="Nama Depan" value="<?php echo $d['nama_depan']; ?>">
 						</div>
 						<div class="form-group">
 							<label>Nama Belakang</label>
-							<input type="text" class="form-control" name="username" placeholder="Nama Belakang">
+							<input type="text" class="form-control" name="nama_belakang" placeholder="Nama Belakang" value="<?php echo $d['nama_belakang']; ?>">
 						</div>
 						<div class="form-group">
 							<label>Jenis Kelamin</label>
-							<input type="text" class="form-control" name="username" placeholder="Jenis Kelamin">
+							<div class="radio">
+								<label>
+									<input type="radio" name="jenis_kelamin" placeholder="Jenis Kelamin" value="L" <?php echo $d['jenis_kelamin'] == "L" ? "checked" : ""; ?>> Laki-Laki
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="jenis_kelamin" placeholder="Jenis Kelamin" value="P" <?php echo $d['jenis_kelamin'] == "P" ? "checked" : ""; ?>> Perempuan
+								</label>
+							</div>
 						</div>
 						<div class="form-group">
 							<label>Tanggal Lahir</label>
-							<input type="text" class="form-control" name="username" placeholder="Tanggal Lahir">
+							<input type="date" class="form-control" name="tanggal_lahir" placeholder="Tanggal Lahir" value="<?php echo $d['tanggal_lahir']; ?>">
 						</div>
 						<div class="form-group">
 							<label>Email</label>
-							<input type="text" class="form-control" name="username" placeholder="Email">
+							<input type="email" class="form-control" name="email" placeholder="Email" value="<?php echo $d['email']; ?>">
+						</div>
+						<div class="form-group">
+							<label>Password Baru</label>
+							<input type="password" class="form-control" name="password" placeholder="password">
+						</div>
+						<div class="form-group">
+							<label>Konfirmasi Password Baru</label>
+							<input type="password" class="form-control" name="konfirmasi_password" placeholder="konfirmasi_password">
+						</div>
+						<div class="form-group">
+							<label>Password Lama</label>
+							<input type="password" class="form-control" name="password_lama" placeholder="password_lama">
 						</div>
 						<button type="submit" name="submit" class="btn btn-primary pull-right">Daftar</button>
 					</form>

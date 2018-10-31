@@ -10,22 +10,42 @@ class Mahasiswa_model{
         $this->conn = $db->db_connect();
     }
 
-    public function list_mahasiswa(){
-        $query = "SELECT
-                  `id`,
-                  `nim`,
-                  CONCAT(
-                      `nama_depan`,
-                      ' ',
-                      `nama_belakang`
-                  ) AS nama,`kelas`,
-                  `tanggal_lahir`,
-                  `hobby`,
-                  `wisata_favorit`,
-                  `genre_film_favorit`
-                FROM
-                  `mahasiswa`
-                ";
+    public function list_mahasiswa($nim=null){
+        if (isset($nim)) {
+            $query = "SELECT
+                      `id`,
+                      `nim`,
+                      CONCAT(
+                          `nama_depan`,
+                          ' ',
+                          `nama_belakang`
+                      ) AS nama,`kelas`,
+                      `tanggal_lahir`,
+                      `hobby`,
+                      `wisata_favorit`,
+                      `genre_film_favorit`
+                    FROM
+                      `mahasiswa`
+                    WHERE
+                      `nim` LIKE '%$nim%'
+                    ";
+        } else{
+            $query = "SELECT
+                      `id`,
+                      `nim`,
+                      CONCAT(
+                          `nama_depan`,
+                          ' ',
+                          `nama_belakang`
+                      ) AS nama,`kelas`,
+                      `tanggal_lahir`,
+                      `hobby`,
+                      `wisata_favorit`,
+                      `genre_film_favorit`
+                    FROM
+                      `mahasiswa`
+                    ";
+        }
         $result = mysqli_query($this->conn,$query) or die (mysqli_error($this->conn));
         $data = array();
         while($d = mysqli_fetch_assoc($result)){

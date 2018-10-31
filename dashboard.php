@@ -20,6 +20,19 @@ if (!isset($_SESSION['username'])) {
 			<?php include_once 'side_nav.php'; ?>
 		</div>
 		<div class="col-md-9">
+			<div class="row">
+				<div class="col-md-5 pull-right">
+					<form action=" " method="get">
+						<div class="input-group">
+							<span class="input-group-addon">NIM</span>
+							<input type="text" name="nim" class="form-control" placeholder="NIM Mahasiswa">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="submit">Cari</button>
+							</span>
+						</div><!-- /input-group -->
+					</form>
+				</div><!-- /.col-lg-6 -->
+			</div>
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
@@ -38,8 +51,9 @@ if (!isset($_SESSION['username'])) {
 					<tbody>
 						<?php
 						$n = 1;
-						foreach ($mm->list_mahasiswa() as $d) {
-							?>
+						isset($_GET['nim']) ? $nim = $_GET['nim'] : null;
+						foreach ($mm->list_mahasiswa($nim) as $d) {
+						?>
 							<tr>
 								<td><?php echo $n; ?></td>
 								<td><?php echo $d['nim']; ?></td>

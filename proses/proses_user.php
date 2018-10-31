@@ -31,6 +31,34 @@ if(isset($_GET['proses'])){
                 header('location: ../index.php');
             }
             break;
+        case 'update_profile':
+            $id = isset($_POST['id']) ? $_POST['id'] : "";
+            $username = isset($_POST['username']) ? $_POST['username'] : "";
+            $nama_depan = isset($_POST['nama_depan']) ? $_POST['nama_depan'] : "";
+            $nama_belakang = isset($_POST['nama_belakang']) ? $_POST['nama_belakang'] : "";
+            $jenis_kelamin = isset($_POST['jenis_kelamin']) ? $_POST['jenis_kelamin'] : "";
+            $tanggal_lahir = isset($_POST['tanggal_lahir']) ? $_POST['tanggal_lahir'] : "";
+            $email = isset($_POST['email']) ? $_POST['email'] : "";
+            $password = isset($_POST['password']) ? $_POST['password'] : null;
+            $konfirmasi_password = isset($_POST['konfirmasi_password']) ? $_POST['konfirmasi_password'] : "";
+            $password_lama = isset($_POST['password_lama']) ? $_POST['password_lama'] : "";
+
+            $result = null;
+            if($password != "" && $password == $konfirmasi_password){
+                $d = mysqli_fetch_array($um->detail_user($id));
+                if ($d['password'] == md5($password_lama)) {
+                    $result = $um->update_profile_user($username,$nama_depan,$nama_belakang,$jenis_kelamin,$tanggal_lahir,$email,md5($password),$id);
+                }
+            } else{
+                $result = $um->update_profile_user($username,$nama_depan,$nama_belakang,$jenis_kelamin,$tanggal_lahir,$email,null,$id);
+            }
+            if ($result) {
+                header('location: ../profile.php');
+            } else {
+                header('location: ../profile.php');
+            }
+
+            break;
         default:
             // code...
             break;
